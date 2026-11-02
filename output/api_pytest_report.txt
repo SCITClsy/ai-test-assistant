@@ -1,0 +1,148 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- E:\PYTHON\python.exe
+cachedir: .pytest_cache
+rootdir: E:\ai-test-assistant\output\api_scripts
+plugins: anyio-4.15.1, langsmith-0.14.16
+collecting ... collected 8 items
+
+test_api.py::test_api_001 FAILED                                         [ 12%]
+test_api.py::test_api_002 FAILED                                         [ 25%]
+test_api.py::test_api_003 FAILED                                         [ 37%]
+test_api.py::test_api_004 FAILED                                         [ 50%]
+test_api.py::test_api_005 FAILED                                         [ 62%]
+test_api.py::test_api_006 FAILED                                         [ 75%]
+test_api.py::test_api_007 FAILED                                         [ 87%]
+test_api.py::test_api_008 FAILED                                         [100%]
+
+================================== FAILURES ===================================
+________________________________ test_api_001 _________________________________
+
+    def test_api_001():
+        """验证正常获取仓库信息"""
+        resp = api_request(params={"owner": "octocat", "repo": "Hello-World"}, headers={"Content-Type": "application/json"})
+        assert resp.status_code == 200, f"期望状态码200，实际{resp.status_code}: {resp.text}"
+>       assert "name" in resp.text, "响应中应包含字段: name"
+E       AssertionError: 响应中应包含字段: name
+E       assert 'name' in '{\n  "userId": 1,\n  "id": 1,\n  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",\n  "body": "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto"\n}'
+E        +  where '{\n  "userId": 1,\n  "id": 1,\n  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",\n  "body": "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto"\n}' = <Response [200]>.text
+
+test_api.py:31: AssertionError
+________________________________ test_api_002 _________________________________
+
+    def test_api_002():
+        """验证正常获取仓库描述"""
+        resp = api_request(params={"owner": "octocat", "repo": "Hello-World"}, headers={"Content-Type": "application/json"})
+        assert resp.status_code == 200, f"期望状态码200，实际{resp.status_code}: {resp.text}"
+>       assert "description" in resp.text, "响应中应包含字段: description"
+E       AssertionError: 响应中应包含字段: description
+E       assert 'description' in '{\n  "userId": 1,\n  "id": 1,\n  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",\n  "body": "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto"\n}'
+E        +  where '{\n  "userId": 1,\n  "id": 1,\n  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",\n  "body": "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto"\n}' = <Response [200]>.text
+
+test_api.py:38: AssertionError
+________________________________ test_api_003 _________________________________
+
+    def test_api_003():
+        """验证owner为空时的响应"""
+        resp = api_request(params={"owner": "", "repo": "Hello-World"}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 404, f"期望状态码404，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码404，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:44: AssertionError
+________________________________ test_api_004 _________________________________
+
+    def test_api_004():
+        """验证repo为空时的响应"""
+        resp = api_request(params={"owner": "octocat", "repo": ""}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 404, f"期望状态码404，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码404，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:50: AssertionError
+________________________________ test_api_005 _________________________________
+
+    def test_api_005():
+        """验证owner不存在时的响应"""
+        resp = api_request(params={"owner": "non-existent", "repo": "Hello-World"}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 404, f"期望状态码404，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码404，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:56: AssertionError
+________________________________ test_api_006 _________________________________
+
+    def test_api_006():
+        """验证repo不存在时的响应"""
+        resp = api_request(params={"owner": "octocat", "repo": "non-existent"}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 404, f"期望状态码404，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码404，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:62: AssertionError
+________________________________ test_api_007 _________________________________
+
+    def test_api_007():
+        """验证缺少owner时的响应"""
+        resp = api_request(params={"repo": "Hello-World"}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 400, f"期望状态码400，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码400，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 400
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:68: AssertionError
+________________________________ test_api_008 _________________________________
+
+    def test_api_008():
+        """验证缺少repo时的响应"""
+        resp = api_request(params={"owner": "octocat"}, headers={"Content-Type": "application/json"})
+>       assert resp.status_code == 400, f"期望状态码400，实际{resp.status_code}: {resp.text}"
+E       AssertionError: 期望状态码400，实际200: {
+E           "userId": 1,
+E           "id": 1,
+E           "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+E           "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+E         }
+E       assert 200 == 400
+E        +  where 200 = <Response [200]>.status_code
+
+test_api.py:74: AssertionError
+=========================== short test summary info ===========================
+FAILED test_api.py::test_api_001 - AssertionError: 响应中应包含字段: name
+FAILED test_api.py::test_api_002 - AssertionError: 响应中应包含字段: description
+FAILED test_api.py::test_api_003 - AssertionError: 期望状态码404，实际200: {
+FAILED test_api.py::test_api_004 - AssertionError: 期望状态码404，实际200: {
+FAILED test_api.py::test_api_005 - AssertionError: 期望状态码404，实际200: {
+FAILED test_api.py::test_api_006 - AssertionError: 期望状态码404，实际200: {
+FAILED test_api.py::test_api_007 - AssertionError: 期望状态码400，实际200: {
+FAILED test_api.py::test_api_008 - AssertionError: 期望状态码400，实际200: {
+======================= 8 failed, 13 warnings in 10.05s =======================
+
